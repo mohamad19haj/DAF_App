@@ -3,7 +3,7 @@ name: Build Android App
 on: 
   push:
     branches:
-      - main  # تنفيذ العملية عند أي تحديث على الفرع الرئيسي
+      - main
   pull_request:
     branches:
       - main
@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: 🔄 Checkout Repository
-        uses: actions/checkout@v4  # تحديث الإصدار إلى v4
+        uses: actions/checkout@v4
 
       - name: 🏗️ Setup Java JDK
         uses: actions/setup-java@v3
@@ -25,11 +25,14 @@ jobs:
       - name: 📦 Setup Gradle
         uses: gradle/gradle-build-action@v2
 
+      - name: 🔑 Give Execute Permission to Gradle
+        run: chmod +x ./gradlew  # ✅ حل مشكلة الصلاحيات
+
       - name: 🚀 Build APK
         run: ./gradlew assembleDebug
 
       - name: 📤 Upload APK
-        uses: actions/upload-artifact@v4  # تحديث الإصدار إلى v4
+        uses: actions/upload-artifact@v4
         with:
           name: app-apk
           path: app/build/outputs/apk/debug/app-debug.apk
